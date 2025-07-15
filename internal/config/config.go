@@ -8,57 +8,56 @@ import (
 
 const configFile = ".gatorconfig.json"
 
-// according to gatorconfig
-type config struct {
+// Exported Struct and Fields
+type Config struct {
 	DbUrl       string `json:"db_url"`
 	CurrentUser string `json:"current_user"`
 }
 
-// get the json file path
+// Returns full path like /home/user/.gatorconfig.json
 func getConfigFilePath() (string, error) {
-	home, err := os.UserHomeDir()
+	cwd, err := os.Getwd()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, configFile), nil
+	return filepath.Join(cwd, configFile), nil
 }
 
-// read the json file
-func read() (config, error) {
-	var cfg config // empty config struct
+// Read config from file
+func Read() (*Config, error) {
+	var cfg Config
 	path, err := getConfigFilePath()
 	if err != nil {
-		return cfg, err
+		return nil, err
 	}
-	// read file
-	file, err := os.ReadFile(path)
+	file, err := os.Open(path)
 	if err != nil {
-		return cfg, nil
+		return nil, err
 	}
-	err = json.Unmarshal(file, &cfg)
-	if err != nil {
-		return cfg, nil
-	}
-	return cfg, nil
+	defer file.Close()
 
+	decoder := json.NewDecoder(file)
+	if err := decoder.Decode(&cfg); err != nil {
+		return nil, err
+	}
+	return &cfg, nil
 }
 
-// set the user name
-func (cfg *config) SetUser(username string) error {
+// Set the current user and save
+func (cfg *Config) SetUser(username string) error {
 	cfg.CurrentUser = username
-	return write(*cfg) // write in the config struct
+	return write(cfg)
 }
 
-// write on the config
-func write(cfg config) error {
+// Write config back to file
+func write(cfg *Config) error {
 	path, err := getConfigFilePath()
 	if err != nil {
 		return err
 	}
-	data, err := json.MarshalIndent(cfg, "", " ")
+	data, err := json.MarshalIndent(cfg, "", "  ")
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(path, data, 0644) // 0644 -read/write access
-
+	return os.WriteFile(path, data, 0644)
 }
