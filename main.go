@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	_ "github.com/lib/pq"
 	Config "github.com/manonmission88/BlogAggregator/internal/config"
 	"github.com/manonmission88/BlogAggregator/internal/handler"
 	"github.com/manonmission88/BlogAggregator/internal/state"
