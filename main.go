@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"log"
 	Config "main/internal/config"
+	"main/internal/handler"
+	"main/internal/state"
+	"os"
 )
 
 // read the config file and print on the terminal
@@ -13,11 +16,25 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error reading config: %v", err)
 	}
-	err = cfg.SetUser("Manish")
-	if err != nil {
-		log.Fatal("couldnot set the field")
+	// update the new config
+	appState := &state.State{
+		Config: &cfg,
 	}
-	fmt.Printf("db: %s\n", cfg.DbUrl)
-	fmt.Printf("User: %s\n", cfg.CurrentUser)
+	cmds := handler.New()
+	cmds.Register("login", handler.HandlerLogin)
+
+	args := os.Args
+	if len(args) < 2 {
+		log.Fatalf("too few commands")
+	}
+
+	newCommands := &handler.Command{
+		Name: args[1],
+		Args: args[2:],
+	}
+	if err := cmds.Run(appState, *newCommands); err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(1)
+	}
 
 }

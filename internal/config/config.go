@@ -24,40 +24,51 @@ func getConfigFilePath() (string, error) {
 }
 
 // Read config from file
-func Read() (*Config, error) {
-	var cfg Config
-	path, err := getConfigFilePath()
+func Read() (Config, error) {
+	fullPath, err := getConfigFilePath()
 	if err != nil {
-		return nil, err
+		return Config{}, err
 	}
-	file, err := os.Open(path)
+	file, err := os.Open(fullPath)
 	if err != nil {
-		return nil, err
+		return Config{}, err
 	}
 	defer file.Close()
 
 	decoder := json.NewDecoder(file)
-	if err := decoder.Decode(&cfg); err != nil {
-		return nil, err
+	cfg := Config{}
+	err = decoder.Decode(&cfg)
+	if err != nil {
+		return Config{}, err
 	}
-	return &cfg, nil
+	return cfg, nil
 }
 
 // Set the current user and save
 func (cfg *Config) SetUser(username string) error {
 	cfg.CurrentUser = username
-	return write(cfg)
+	return write(*cfg)
 }
 
 // Write config back to file
-func write(cfg *Config) error {
-	path, err := getConfigFilePath()
+func write(cfg Config) error {
+	fullPath, err := getConfigFilePath()
 	if err != nil {
 		return err
 	}
-	data, err := json.MarshalIndent(cfg, "", "  ")
+	// Debug: print config before writing
+	file, err := os.Create(fullPath) // truncate the path if its already exist
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(path, data, 0644)
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "  ")
+
+	if err := encoder.Encode(cfg); err != nil {
+		return err
+	}
+
+	return nil
 }
