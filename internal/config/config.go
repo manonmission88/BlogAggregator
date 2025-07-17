@@ -16,7 +16,7 @@ type Config struct {
 
 // Returns full path like /home/user/.gatorconfig.json
 func getConfigFilePath() (string, error) {
-	cwd, err := os.Getwd()
+	cwd, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
