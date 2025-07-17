@@ -2,7 +2,8 @@ package handler
 
 import (
 	"fmt"
-	"main/internal/state"
+
+	"github.com/manonmission88/BlogAggregator/internal/state"
 )
 
 // allow user login

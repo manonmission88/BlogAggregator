@@ -1,6 +1,6 @@
 package state
 
-import "main/internal/config"
+import "github.com/manonmission88/BlogAggregator/internal/config"
 
 // State holds a pointer to the Config struct.
 type State struct {

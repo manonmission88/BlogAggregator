@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
-	Config "main/internal/config"
-	"main/internal/handler"
-	"main/internal/state"
 	"os"
+
+	Config "github.com/manonmission88/BlogAggregator/internal/config"
+	"github.com/manonmission88/BlogAggregator/internal/handler"
+	"github.com/manonmission88/BlogAggregator/internal/state"
 )
 
 // read the config file and print on the terminal

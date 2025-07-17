@@ -5,4 +5,3 @@ main
 *.test
 /vendor/
 .DS_Store
-*.mod
