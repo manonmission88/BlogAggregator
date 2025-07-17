@@ -1,1 +1,8 @@
-/go.mod
+main
+/.gatorconfig.json
+*.exe
+*.out
+*.test
+/vendor/
+.DS_Store
+*.mod
