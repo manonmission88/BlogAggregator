@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -16,8 +17,13 @@ func HandlerRegister(s *state.State, cmd Command) error {
 		return fmt.Errorf("name is required")
 	}
 	userName := cmd.Args[0]
+	// check if the username already exists
+	_, err := s.DbQueries.GetUserByName(context.Background(), userName)
+	if err == nil {
+		os.Exit(1)
+	}
 	// set the username
-	_, err := s.DbQueries.CreateUser(context.Background(), database.CreateUserParams{
+	_, err = s.DbQueries.CreateUser(context.Background(), database.CreateUserParams{
 		ID:        uuid.New(),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
