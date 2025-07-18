@@ -9,3 +9,13 @@ CREATE TABLE users (
 
 -- +goose Down
 DROP TABLE users;
+
+-- +goose up 
+CREATE TABLE feeds (
+    id UUID PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+    name TEXT NOT NULL 
+    url TEXT UNIQUE
+    user_id 
+)
