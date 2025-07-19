@@ -1,5 +1,6 @@
 package rss
 
+// xml types 
 type RSSFeed struct {
 	Channel struct {
 		Title       string    `xml:"title"`
