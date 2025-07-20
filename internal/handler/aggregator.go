@@ -1,31 +1,31 @@
 package handler
 
 import (
-	"context"
 	"fmt"
+	"log"
+	"time"
 
 	"github.com/manonmission88/BlogAggregator/internal/database"
-	"github.com/manonmission88/BlogAggregator/internal/rss"
 	"github.com/manonmission88/BlogAggregator/internal/state"
 )
 
-const url = "https://www.wagslane.dev/index.xml"
-
 // allow register user to the database
 func HandlerAgg(s *state.State, cmd Command, user database.User) error {
-	feedData, err := rss.FetchFeed(context.Background(), url)
+	args := cmd.Args
+	if len(args) < 1 {
+		return fmt.Errorf("usage agg <time lapse>")
+	}
+	timeRequest, err := time.ParseDuration(args[0])
 	if err != nil {
-		return fmt.Errorf("couldnot fetch the data")
+		return fmt.Errorf("%w", err)
 	}
-	// print all the struct field
-	fmt.Printf("Feed Title: %s\n", feedData.Channel.Title)
-	fmt.Printf("Feed Description: %s\n", feedData.Channel.Description)
-	for _, item := range feedData.Channel.Item {
-		fmt.Printf("Item Title: %s\n", item.Title)
-		fmt.Printf("Item Link: %s\n", item.Link)
-		fmt.Printf("Item Description: %s\n", item.Description)
-		fmt.Println("---")
-	}
-	return nil
+	log.Printf("Collecting feed in time ---> %s\n", timeRequest)
 
+	// create time ticker -> sends signal on every that time gap
+	ticker := time.NewTicker(timeRequest)
+	// defer ticker.Stop()
+
+	for ; ; <-ticker.C {
+		ScrapeFeeds(s)
+	}
 }
