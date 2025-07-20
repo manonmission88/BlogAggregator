@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/manonmission88/BlogAggregator/internal/database"
 	"github.com/manonmission88/BlogAggregator/internal/state"
 )
 
 // return all the feeds in the database
-func HandlerFeed(s *state.State, cmd Command) error {
+func HandlerFeed(s *state.State, cmd Command, user database.User) error {
 
 	feedsData, err := s.DbQueries.GetAllFeeds(context.Background())
 	if err != nil {

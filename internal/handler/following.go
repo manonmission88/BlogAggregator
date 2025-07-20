@@ -4,16 +4,13 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/manonmission88/BlogAggregator/internal/database"
 	"github.com/manonmission88/BlogAggregator/internal/state"
 )
 
 // add followers to the feed
-func HandlerFollowing(s *state.State, cmd Command) error {
+func HandlerFollowing(s *state.State, cmd Command, user database.User) error {
 
-	user, err := s.DbQueries.GetUserByName(context.Background(), s.Config.CurrentUser)
-	if err != nil {
-		return err
-	}
 	followersData, err := s.DbQueries.GetFeedFollowsForUser(context.Background(), user.ID)
 	if err != nil {
 		return err

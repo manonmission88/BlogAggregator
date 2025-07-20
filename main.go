@@ -34,13 +34,13 @@ func main() {
 	cmds := handler.New()
 	cmds.Register("login", handler.HandlerLogin)
 	cmds.Register("register", handler.HandlerRegister)
-	cmds.Register("reset", handler.HandlerReset)
-	cmds.Register("users", handler.HandlerUsers)
-	cmds.Register("agg", handler.HandlerAgg)
-	cmds.Register("addfeed", handler.HandlerAddFeed)
-	cmds.Register("feeds", handler.HandlerFeed)
-	cmds.Register("follow", handler.HandlerFollow)
-	cmds.Register("following", handler.HandlerFollowing)
+	cmds.Register("reset", handler.MiddlewareLoggedIn(handler.HandlerReset))
+	cmds.Register("users", handler.MiddlewareLoggedIn(handler.HandlerUsers))
+	cmds.Register("agg", handler.MiddlewareLoggedIn(handler.HandlerAgg))
+	cmds.Register("addfeed", handler.MiddlewareLoggedIn(handler.HandlerAddFeed))
+	cmds.Register("feeds", handler.MiddlewareLoggedIn(handler.HandlerFeed))
+	cmds.Register("follow", handler.MiddlewareLoggedIn(handler.HandlerFollow))
+	cmds.Register("following", handler.MiddlewareLoggedIn(handler.HandlerFollowing))
 
 	args := os.Args
 	if len(args) < 2 {

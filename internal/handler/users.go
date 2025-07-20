@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/manonmission88/BlogAggregator/internal/database"
 	"github.com/manonmission88/BlogAggregator/internal/state"
 )
 
 // allow register user to the database
-func HandlerUsers(s *state.State, cmd Command) error {
+func HandlerUsers(s *state.State, cmd Command, user database.User) error {
 
 	names, err := s.DbQueries.GetUsers(context.Background())
 	if err != nil {

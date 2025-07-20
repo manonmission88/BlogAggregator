@@ -11,7 +11,7 @@ import (
 )
 
 // add followers to the feed
-func HandlerFollow(s *state.State, cmd Command) error {
+func HandlerFollow(s *state.State, cmd Command, user database.User) error {
 	args := cmd.Args
 	if len(args) < 1 {
 		return fmt.Errorf("usage follow < url feed> Example : follow  <https://hnrss.org/newest> : ")
@@ -21,10 +21,7 @@ func HandlerFollow(s *state.State, cmd Command) error {
 	if err != nil {
 		return err
 	}
-	user, err := s.DbQueries.GetUserByName(context.Background(), s.Config.CurrentUser)
-	if err != nil {
-		return err
-	}
+
 	_, err = s.DbQueries.CreateFeedFollow(context.Background(), database.CreateFeedFollowParams{
 		ID:        uuid.New(),
 		CreatedAt: time.Now(),
