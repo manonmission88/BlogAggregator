@@ -42,5 +42,6 @@ func HandlerAddFeed(s *state.State, cmd Command, user database.User) error {
 	if err != nil {
 		return fmt.Errorf("could not follow the newly created feed: %w", err)
 	}
+	fmt.Printf("%s successfully followed %s", user, url)
 	return nil
 }
