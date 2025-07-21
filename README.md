@@ -97,13 +97,13 @@ This will download and install the `gator` CLI binary in your `$GOPATH/bin`.
 
    ```bash
    gator reset                                   # Reset your account/data
-   gator register manish                          # Register user 'kahya'
+   gator register manish                          # Register user 'manish'
    gator addfeed "Hacker News RSS" "https://hnrss.org/newest"      # Add a feed
-   gator register niure                        # Register user 'holgith'
+   gator register niure                        # Register user 'niure'
    gator addfeed "Blog1" "https://www.wagslane.dev/index.xml" # Add a feed
    gator follow "https://hnrss.org/newest"       # Follow a feed
    gator following                               # List feeds you follow
-   gator login manish                            # Log in as 'kahya'
+   gator login manish                            # Log in as 'manish'
    gator following                               # List feeds you follow
    gator browse [number]                         # Browse posts (specify number for limited posts)
    ```
@@ -115,22 +115,22 @@ This will download and install the `gator` CLI binary in your `$GOPATH/bin`.
 ```bash
 gator reset
 
-gator register kahya
+gator register manish
 
 gator addfeed "Hacker News RSS" "https://hnrss.org/newest"
 
-gator register holgith
+gator register niure
 
-gator addfeed "Lanes Blog" "https://www.wagslane.dev/index.xml"
+gator addfeed "Blog1" "https://www.wagslane.dev/index.xml"
 
 gator follow "https://hnrss.org/newest"
 
 gator following
 # Output should include:
 # Hacker News RSS
-# Lanes Blog
+# Blog1
 
-gator login kahya
+gator login manish
 gator following
 
 gator browse 5
